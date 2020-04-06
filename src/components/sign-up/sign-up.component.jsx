@@ -87,7 +87,7 @@ class SignUp extends React.Component {
                         required
                     >
                     </FormInput>
-                    <CustomButton type='submit'>SIGN IN</CustomButton>
+                    <CustomButton type='submit'>SIGN UP</CustomButton>
                 </form>
             </div>
         );
