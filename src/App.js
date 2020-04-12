@@ -1,5 +1,5 @@
 import React from 'react';
-import {Switch, Route} from 'react-router-dom';
+import {Switch, Route, Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
 import './App.css';
 import HomePage from './pages/homepage/homepage.component';
@@ -8,7 +8,6 @@ import AuthPage from './pages/auth/auth.component';
 import Header from './components/header/header.component';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import { setCurrentUser } from './redux/user/user.actions';
-// import { render } from 'node-sass';
 
 class App extends React.Component {
 
@@ -42,7 +41,7 @@ class App extends React.Component {
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path='/shop' component={ShopPage} />
-          <Route path='/signin' component={AuthPage} />
+          <Route exact path='/signin' render={() => this.props.currentUser ? (<Redirect to='/' />) : (<AuthPage />)} component={AuthPage} />
           <HomePage />
         </Switch>
       </div>
@@ -51,8 +50,12 @@ class App extends React.Component {
 
 }
 
+const mapStateToProps = ({ user }) => ({
+  currentUser : user.currentUser
+})
+
 const mapDispatchToProps = (dispatch) => ({
   setCurrentUser : user => dispatch(setCurrentUser(user)) //dispatch method tells that you gotta return an action as the payload
 })
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
